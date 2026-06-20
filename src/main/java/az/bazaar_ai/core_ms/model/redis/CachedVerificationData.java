@@ -27,8 +27,7 @@ public class CachedVerificationData {
     @ToString.Exclude
     String hashedPassword;
 
-    String firstName;
-    String lastName;
+    String name;
 
     String phone;
 

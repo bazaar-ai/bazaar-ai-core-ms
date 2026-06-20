@@ -18,11 +18,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegisterRequest {
 
-    @NotBlank(message = "firstName cannot be empty!")
-    String firstName;
-
-    @NotBlank(message = "lastName cannot be empty!")
-    String lastName;
+    @NotBlank(message = "name cannot be empty!")
+    String name;
 
     @NotBlank(message = "phone cannot be empty!")
     String phone;

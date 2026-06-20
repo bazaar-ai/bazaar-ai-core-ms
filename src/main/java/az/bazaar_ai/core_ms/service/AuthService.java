@@ -59,8 +59,7 @@ public class AuthService {
 
         CachedVerificationData cachedVerificationData = CachedVerificationData.builder()
                 .hashedToken(passwordEncoder.encode(code))
-                .firstName(registerRequest.getFirstName())
-                .lastName(registerRequest.getLastName())
+                .name(registerRequest.getName())
                 .phone(registerRequest.getPhone())
                 .userRole(registerRequest.getUserRole())
                 .userEmail(email)
@@ -79,7 +78,7 @@ public class AuthService {
                 email,
                 NotificationType.VERIFICATION_CODE,
                 Map.of(
-                        USERNAME, registerRequest.getFirstName(),
+                        USERNAME, registerRequest.getName(),
                         VERIFICATION_CODE, code
                 )
         ));
@@ -116,8 +115,7 @@ public class AuthService {
         }
 
         var user = User.builder()
-                .firstName(cachedVerificationData.getFirstName())
-                .lastName(cachedVerificationData.getLastName())
+                .name(cachedVerificationData.getName())
                 .userRole(cachedVerificationData.getUserRole())
                 .phone(cachedVerificationData.getPhone())
                 .email(cachedVerificationData.getUserEmail())

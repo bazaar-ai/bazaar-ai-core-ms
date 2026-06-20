@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 02-21062026-update-users-name-column
+      author: Jahangir Alisoy
+      changes:
+        - dropColumn:
+            tableName: users
+            columnName: first_name
+        - dropColumn:
+            tableName: users
+            columnName: last_name
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
