@@ -1,3 +1,7 @@
+buildscript {
+	apply from: 'versions.gradle'
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.1.0'
@@ -5,7 +9,7 @@ plugins {
 }
 
 group = 'az.bazaar-ai'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 
 java {
 	toolchain {
@@ -18,27 +22,42 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-liquibase'
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${v.springdoc}"
+	implementation "io.jsonwebtoken:jjwt-api:${v.jjwt}"
+
 	compileOnly 'org.projectlombok:lombok'
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	runtimeOnly 'org.postgresql:postgresql'
+
+	runtimeOnly "io.jsonwebtoken:jjwt-jackson:${v.jjwt}"
+	runtimeOnly "io.jsonwebtoken:jjwt-impl:${v.jjwt}"
+
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-liquibase-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-mail-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-liquibase-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-mail-test'
+
 	testCompileOnly 'org.projectlombok:lombok'
+
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
