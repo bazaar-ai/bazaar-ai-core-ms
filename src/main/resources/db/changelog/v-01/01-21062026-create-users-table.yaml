@@ -40,9 +40,18 @@ databaseChangeLog:
                     nullable: false
                     unique: true
               - column:
+                  name: profile_photo
+                  type: BYTEA
+              - column:
                   name: user_role
                   type: varchar(255)
                   defaultValue: 'MERCHANT'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_status
+                  type: varchar(255)
+                  defaultValue: 'ACTIVE'
                   constraints:
                     nullable: false
               - column:
