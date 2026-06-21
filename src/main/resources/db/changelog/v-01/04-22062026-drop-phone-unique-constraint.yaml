@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 04-22062026-drop-phone-unique-constraint
+      author: Jahangir Alisoy
+      changes:
+        - dropUniqueConstraint:
+            tableName: users
+            constraintName: users_phone_key

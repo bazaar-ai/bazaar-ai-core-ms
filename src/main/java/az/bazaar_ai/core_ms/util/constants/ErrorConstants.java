@@ -5,7 +5,6 @@ public final class ErrorConstants {
     public static final String USER_NOT_FOUND = "USER NOT FOUND!";
     public static final String PENDING_VERIFICATION_NOT_FOUND = "PENDING VERIFICATION NOT FOUND!";
     public static final String EMAIL_ALREADY_EXISTS = "EMAIL ALREADY EXISTS!";
-    public static final String PHONE_ALREADY_EXISTS = "PHONE ALREADY EXISTS!";
     public static final String VERIFICATION_TOKEN_EXPIRED = "VERIFICATION TOKEN EXPIRED!";
     public static final String INVALID_VERIFICATION_TOKEN = "INVALID VERIFICATION TOKEN!";
     public static final String FAILED_TO_UPLOAD_PROFILE_PHOTO = "FAILED TO UPLOAD PROFILE PHOTO!";
