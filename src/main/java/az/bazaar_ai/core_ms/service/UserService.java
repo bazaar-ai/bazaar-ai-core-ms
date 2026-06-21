@@ -1,6 +1,7 @@
 package az.bazaar_ai.core_ms.service;
 
 import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.FAILED_TO_UPLOAD_PROFILE_PHOTO;
+import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.PHONE_ALREADY_EXISTS;
 import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.USER_NOT_FOUND;
 
 import az.bazaar_ai.core_ms.handler.exception.ApplicationException;
@@ -33,6 +34,10 @@ public class UserService {
     public SuccessResponse<Void> updateUserDetails(String email, UpdateUserDetailsRequest updateUserDetailsRequest) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
+
+        if (userRepository.existsByPhone(updateUserDetailsRequest.getPhone())) {
+            throw new ApplicationException(PHONE_ALREADY_EXISTS);
+        }
 
         user.setName(updateUserDetailsRequest.getName());
         user.setPhone(updateUserDetailsRequest.getPhone());

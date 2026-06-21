@@ -1,10 +1,6 @@
 package az.bazaar_ai.core_ms.service;
 
-import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.EMAIL_ALREADY_EXISTS;
-import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.INVALID_VERIFICATION_TOKEN;
-import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.PENDING_VERIFICATION_NOT_FOUND;
-import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.USER_NOT_FOUND;
-import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.VERIFICATION_TOKEN_EXPIRED;
+import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.*;
 import static az.bazaar_ai.core_ms.util.constants.EventConstants.USERNAME;
 import static az.bazaar_ai.core_ms.util.constants.EventConstants.VERIFICATION_CODE;
 import static az.bazaar_ai.core_ms.util.generators.OTPGenerator.generateSixDigitOTP;
@@ -55,8 +51,11 @@ public class AuthService {
         String email = registerRequest.getEmail();
         log.info("register started for user: {}", email);
 
-        if (userRepository.findByEmail(email).isPresent()) {
+        if (userRepository.existsByEmail(email)) {
             throw new ApplicationException(EMAIL_ALREADY_EXISTS);
+        }
+        if (userRepository.existsByPhone(registerRequest.getPhone())) {
+            throw new ApplicationException(PHONE_ALREADY_EXISTS);
         }
 
         String password = passwordEncoder.encode(registerRequest.getPassword());
