@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 03-21062026-alter-users-table
+      author: Jahangir Alisoy
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: country
+                  type: varchar(255)
+              - column:
+                  name: city
+                  type: varchar(255)
+              - column:
+                  name: address
+                  type: varchar(255)
+              - column:
+                  name: date_of_birth
+                  type: date

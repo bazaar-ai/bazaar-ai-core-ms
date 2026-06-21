@@ -1,6 +1,7 @@
 package az.bazaar_ai.core_ms.controller;
 
 import az.bazaar_ai.core_ms.model.dto.auth.AuthResponse;
+import az.bazaar_ai.core_ms.model.dto.auth.LoginRequest;
 import az.bazaar_ai.core_ms.model.dto.auth.RegisterRequest;
 import az.bazaar_ai.core_ms.model.dto.auth.VerificationRequest;
 import az.bazaar_ai.core_ms.model.dto.shared.SuccessResponse;
@@ -28,5 +29,10 @@ public class AuthController {
     @PostMapping("/verify")
     public ResponseEntity<SuccessResponse<AuthResponse>> verify(@Valid @RequestBody VerificationRequest verificationRequest) {
         return ResponseEntity.ok(authService.verify(verificationRequest));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<SuccessResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 }

@@ -3,6 +3,7 @@ package az.bazaar_ai.core_ms.service;
 import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.EMAIL_ALREADY_EXISTS;
 import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.INVALID_VERIFICATION_TOKEN;
 import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.PENDING_VERIFICATION_NOT_FOUND;
+import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.USER_NOT_FOUND;
 import static az.bazaar_ai.core_ms.util.constants.ErrorConstants.VERIFICATION_TOKEN_EXPIRED;
 import static az.bazaar_ai.core_ms.util.constants.EventConstants.USERNAME;
 import static az.bazaar_ai.core_ms.util.constants.EventConstants.VERIFICATION_CODE;
@@ -14,6 +15,7 @@ import az.bazaar_ai.core_ms.handler.exception.ApplicationException;
 import az.bazaar_ai.core_ms.handler.exception.InvalidCredentialsException;
 import az.bazaar_ai.core_ms.handler.exception.ResourceNotFoundException;
 import az.bazaar_ai.core_ms.model.dto.auth.AuthResponse;
+import az.bazaar_ai.core_ms.model.dto.auth.LoginRequest;
 import az.bazaar_ai.core_ms.model.dto.auth.RegisterRequest;
 import az.bazaar_ai.core_ms.model.dto.auth.VerificationRequest;
 import az.bazaar_ai.core_ms.model.dto.shared.SuccessResponse;
@@ -29,6 +31,8 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +48,7 @@ public class AuthService {
     private final RedisService redisService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public SuccessResponse<Void> register(RegisterRequest registerRequest) {
@@ -126,6 +131,18 @@ public class AuthService {
         redisService.delete(registerKey(email));
 
         return SuccessResponse.of(generateAuthResponse(user), "account verified successfully");
+    }
+
+    public SuccessResponse<AuthResponse> login(LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        log.info("login started for user: {}", email);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
+
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, loginRequest.getPassword()));
+
+        return SuccessResponse.of(generateAuthResponse(user), "login successfully!");
     }
 
     private AuthResponse generateAuthResponse(User user) {

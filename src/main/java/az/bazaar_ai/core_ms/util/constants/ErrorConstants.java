@@ -7,4 +7,5 @@ public final class ErrorConstants {
     public static final String EMAIL_ALREADY_EXISTS = "EMAIL ALREADY EXISTS!";
     public static final String VERIFICATION_TOKEN_EXPIRED = "VERIFICATION TOKEN EXPIRED!";
     public static final String INVALID_VERIFICATION_TOKEN = "INVALID VERIFICATION TOKEN!";
+    public static final String FAILED_TO_UPLOAD_PROFILE_PHOTO = "FAILED TO UPLOAD PROFILE PHOTO!";
 }

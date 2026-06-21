@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -53,6 +54,18 @@ public class User {
 
     @Column(name = "password", nullable = false)
     String password;
+
+    @Column(name = "date_of_birth")
+    LocalDate dateOfBirth;
+
+    @Column(name = "country")
+    String country;
+
+    @Column(name = "city")
+    String city;
+
+    @Column(name = "address")
+    String address;
 
     @JdbcTypeCode(SqlTypes.VARBINARY)
     @Column(name = "profile_photo")
