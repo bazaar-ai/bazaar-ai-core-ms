@@ -12,12 +12,9 @@ import az.bazaar_ai.core_ms.repository.UserRepository;
 import az.bazaar_ai.core_ms.util.enums.InvoiceStatus;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -65,11 +62,11 @@ public class InvoiceService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
 
-        Invoice invoice;
-
         Optional<String> content = readText(file);
 
-        if (content.isPresent()) {
+        Invoice invoice;
+
+        if (content.isPresent() && isInvoiceText(content.get())) {
             invoice = parseInvoice(content.get());
         } else {
             invoice = randomInvoice();
@@ -81,6 +78,10 @@ public class InvoiceService {
         invoiceRepository.save(invoice);
 
         return SuccessResponse.of("invoice uploaded successfully!");
+    }
+
+    private boolean isInvoiceText(String text) {
+        return text.contains("Buyer:") && text.contains("Amount:") && text.contains("Status:");
     }
 
     private Optional<String> readText(MultipartFile file) {
@@ -105,31 +106,20 @@ public class InvoiceService {
     }
 
     private Invoice parseInvoice(String text) {
-        Map<String, String> values = Arrays.stream(text.split("\\R"))
-                .map(line -> line.split(":", 2))
-                .filter(parts -> parts.length == 2)
-                .collect(Collectors.toMap(
-                        p -> p[0].trim().toLowerCase(),
-                        p -> p[1].trim()
-                ));
+        Invoice invoice = new Invoice();
 
-        return Invoice.builder()
-                .buyer(values.getOrDefault("buyer", randomBuyer()))
-                .amount(new BigDecimal(values.getOrDefault("amount", randomAmount().toString())))
-                .invoiceStatus(parseStatus(values.get("status")))
-                .build();
-    }
-
-    private InvoiceStatus parseStatus(String value) {
-        if (value == null) {
-            return randomStatus();
+        for (String line : text.split("\\R")) {
+            if (line.startsWith("Buyer:")) {
+                invoice.setBuyer(line.substring(6).trim());
+            } else if (line.startsWith("Amount:")) {
+                invoice.setAmount(new BigDecimal(line.substring(7).trim()));
+            } else if (line.startsWith("Status:")) {
+                invoice.setInvoiceStatus(
+                        InvoiceStatus.valueOf(line.substring(7).trim().toUpperCase())
+                );
+            }
         }
-
-        try {
-            return InvoiceStatus.valueOf(value.toUpperCase());
-        } catch (Exception e) {
-            return randomStatus();
-        }
+        return invoice;
     }
 
     private Invoice randomInvoice() {
