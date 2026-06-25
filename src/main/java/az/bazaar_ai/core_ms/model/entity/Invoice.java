@@ -40,6 +40,9 @@ public class Invoice {
     @GeneratedValue
     UUID id;
 
+    @Column(name = "merchant_id", nullable = false)
+    UUID merchantId;
+
     @Column(name = "invoice_code", nullable = false, unique = true)
     String invoiceCode;
 

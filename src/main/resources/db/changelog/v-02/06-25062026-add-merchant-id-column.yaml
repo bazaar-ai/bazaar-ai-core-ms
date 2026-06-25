@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 06-25062026-add-merchant-id-column
+      author: Jahangir Alisoy
+      changes:
+        - addColumn:
+            tableName: invoices
+            columns:
+              - column:
+                  name: merchant_id
+                  type: UUID
+                  constraints:
+                    nullable: false

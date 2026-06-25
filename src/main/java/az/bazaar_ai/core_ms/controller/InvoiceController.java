@@ -19,8 +19,8 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<Page<InvoiceResponse>>> getAllInvoices(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(invoiceService.getAllInvoices(page, size));
+    public ResponseEntity<SuccessResponse<Page<InvoiceResponse>>> getAllInvoices(Principal principal, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(invoiceService.getAllInvoices(principal.getName(), page, size));
     }
 
     @PostMapping(value = "/upload-invoice", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
